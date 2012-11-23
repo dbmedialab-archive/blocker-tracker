@@ -1,0 +1,34 @@
+## WIN 32
+Thumbs.db
+
+## ZEND STUDIO
+.settings
+.buildpath
+.project
+
+## GIT CORE
+.git
+
+## GITHUB
+INSTALL.txt
+LICENSE.txt
+README.txt
+demos/
+extras/documentation
+
+## UNVERSIONED
+
+
+## Netbeans
+/nbproject/private/
+/nbproject/project.properties
+/nbproject/project.xml
+
+## WebStorm
+.idea
+us.stackdump
+
+## Mobile Dev
+
+
+## Configs
