@@ -35,7 +35,7 @@
  * <script>
  *	$(document).ready( function(){
  *		var isUsingAdBlock = $.adTestSuccess === undefined ? "Blokkerer annonser" : "Viser annonser";
- *		tracker.push( [ "_trackEvent", "AdBlock", isUsingAdBlock ] );
+ *		_gaq.push( [ "_trackEvent", "AdBlock", isUsingAdBlock ] );
  *	});
  * </script>
  * 
