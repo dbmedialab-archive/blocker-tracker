@@ -17,7 +17,7 @@
  * @returns nothing;
  * 
  * Load the script
- * <script type="text/javascript" src="http://www.dagbladet.no/annonse/adBlockerTest/advertisement.js" charset="utf-8"></script>
+ * <script type="text/javascript" src="http://www.dagbladet.no/annonse/adBlockerTest/advertisement.min.js" charset="utf-8"></script>
  * 
  * Check for presence of jQuery.adTestSuccess
  * <script>
@@ -31,12 +31,12 @@
  * 
  * INSTALLATION
  * ---------------------------------
- * <script type="text/javascript" src="http://www.dagbladet.no/annonse/adBlockerTest/advertisement.js" charset="utf-8"></script>
+ * <script type="text/javascript" src="http://www.dagbladet.no/annonse/adBlockerTest/advertisement.min.js" charset="utf-8"></script>
  * <script>
- *	$(document).ready( function(){
- *		var isUsingAdBlock = $.adTestSuccess === undefined ? "Blokkerer annonser" : "Viser annonser";
- *		_gaq.push( [ "_trackEvent", "AdBlock", isUsingAdBlock ] );
- *	});
+ * 	$(document).ready( function(){
+ * 		var isUsingAdBlock = $.adTestSuccess === undefined ? "Blokkerer annonser" : "Viser annonser";
+ * 		_gaq.push( [ "_trackEvent", "Annonser", "AdBlock", isUsingAdBlock, 0, false ] );
+ * 	});
  * </script>
  * 
  * */
