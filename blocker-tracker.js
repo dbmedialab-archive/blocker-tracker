@@ -42,26 +42,30 @@
 		_namespace = "BlockerTracker",
 		_settings,
 		_loopBack = false,
-		_debug = false;
+		_debug = true;
 		_checks = [],
 		_tracker = window._gaq || false,
 		_error = new Array(
 			false,
 			"Could not load script",
 			"Method does not exist",
-			"Failed to load API/Object"
+			"Failed to load API/Object",
+			"Plugin allready initialized"
 		),
+		_init = false,
 		_log = [];
 	
 	var _public = {
 			init : function( settings ){
-				$.extend( _defaults, settings, true );
-				_settings = _defaults;
-				
-				_private.prepearConsole();
-				
-				$.fn.blockerTracker( "flash" );
-				$.fn.blockerTracker( "ads" );
+				if( !_init ){
+					_init = true;
+					$.extend( _defaults, settings, true );
+					_settings = _defaults;
+					_private.prepearConsole();				
+				}
+				else {
+					_log.log( _namespace, _error[ 4 ] );
+				}
 			},
 			ads : function(){
 				var src = _settings.assets.path + _settings.assets.js,
@@ -210,4 +214,6 @@
 })( jQuery );
 $(window).load( function(){	
 	$.fn.blockerTracker();
+	$.fn.blockerTracker( "ads" );
+	$.fn.blockerTracker( "flash" );
 });

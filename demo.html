@@ -8,6 +8,30 @@
 	<body>
 	
 		<script type="text/javascript" src="blocker-tracker.js"></script>
-	
+	<script>
+		//If you want to use different settings activate the plugin manually before $(window).load()
+		var settings = {
+				api : {
+					swfObject : "http://ajax.googleapis.com/ajax/libs/swfobject/2.2/swfobject.js"
+				},
+				assets : {
+					path: "assets/",
+					js: "advertisement.dummy.js",
+					flash : "flash.dummy.swf"
+				},
+				analytics : {
+					trackType : "_trackEvent",
+					influenceBounce : false,
+					catagory : "BlockerTracker",
+					legacyTracker : true
+				},
+				report : {
+					success : "Showing",
+					block : "Blocking"
+				},
+				id : "blockerTracker_" + new Date().getTime()
+			}
+		$.fn.blockerTracker( settings );
+	</script>
 	</body>
 </html>
