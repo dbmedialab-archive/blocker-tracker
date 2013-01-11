@@ -1,44 +1,15 @@
 /*
- * AD BLOCKER SNIFFER
- * ---------------------------------
- * Ad Block will commonly block scripts named advertisement.js from loading.
- * Utilize this to check for the presence of AdBlock.
- * 
- * @file advertisement.js
- * @author Sebastian Brage Hansen
- * @date 22-November-2012;
- * 
- * Copyright (c) 2012 DB Medialab AS <http://www.dbmedialab.no/>
 
- * USAGE
- * ---------------------------------
- * @parameters none;
- * @dependency jQuery;
- * @returns nothing;
- * 
- * Load the script
- * <script type="text/javascript" src="http://www.dagbladet.no/annonse/adBlockerTest/advertisement.min.js" charset="utf-8"></script>
- * 
- * Check for presence of jQuery.adTestSuccess
- * <script>
- * 	if( $.adTestSuccess === undefined ){
- * 		//do stuff with page without ads
- * 	}
- * 	else {
- * 		//do stuff with normal page
- * 	}
- * </script>
- * 
- * INSTALLATION
- * ---------------------------------
- * <script type="text/javascript" src="http://www.dagbladet.no/annonse/adBlockerTest/advertisement.min.js" charset="utf-8"></script>
- * <script>
- * 	$(document).ready( function(){
- * 		var isUsingAdBlock = $.adTestSuccess === undefined ? "Blokkerer annonser" : "Viser annonser";
- * 		_gaq.push( [ "_trackEvent", "Annonser", "AdBlock", isUsingAdBlock, 0, false ] );
- * 	});
- * </script>
- * 
- * */
+  Support file for blocker-tracker.js
+  Plugin tries to load this.
+  
+  -------------------
 
-jQuery.adTestSuccess = true;
+  @file		advertisement.dummy.js
+  @version	1.0.0
+  @date     11-jan-2013
+  @author   Sebastian Brage Hansen <sbh@dagbladet.no>
+
+  Copyright (c) 2013 DB Medialab AS <http://www.medialaben.no>
+
+*/
