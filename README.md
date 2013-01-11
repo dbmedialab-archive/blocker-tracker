@@ -1,7 +1,8 @@
-Adblock-Sniffer
-===============
+Blocker Tracker - a AdBlock and FlashBlock sniffer
+==================================================
 
-Sample code and layout to sniff for use of ad-block and flash-block and generate reports in Google Analytics.
+Plugin to sniff for use of ad-block and flash-block.
+The plugin reports its findings to Google Analytics as an event (default).
 
 ## Dependancy
 - Google Analytics
