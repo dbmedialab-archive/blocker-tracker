@@ -1,7 +1,7 @@
 Adblock-Sniffer
 ===============
 
-Sample code and layout to sniff for use of ad-block and generate reports.
+Sample code and layout to sniff for use of ad-block and flash-block and generate reports in Google Analytics.
 
 ## Dependancy
 - Google Analytics
