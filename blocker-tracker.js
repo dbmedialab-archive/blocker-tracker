@@ -1,5 +1,23 @@
-(function( $ ){	
+/*
 
+  Plugin to checking if client is running blockers.
+  Plugin tries to load content then checks for success.
+  Method varies with content type, assets are required.
+  
+  Support:
+  	AdBlocker
+  	FlashBlocker
+  -------------------
+
+  @file		blocker-tracker.js
+  @version	2.0.0
+  @date     11-jan-2013
+  @author   Sebastian Brage Hansen <sbh@dagbladet.no>
+
+  Copyright (c) 2013 DB Medialab AS <http://www.medialaben.no>
+
+*/
+(function( $ ){	
 	var _defaults = {
 			api : {
 				swfObject : "http://ajax.googleapis.com/ajax/libs/swfobject/2.2/swfobject.js"
@@ -21,16 +39,19 @@
 			},
 			id : "blockerTracker_" + new Date().getTime()
 		},
+		_namespace = "BlockerTracker",
 		_settings,
 		_loopBack = false,
+		_debug = false;
 		_checks = [],
 		_tracker = window._gaq || false,
 		_error = new Array(
 			false,
 			"Could not load script",
-			"Method does not exist on jQuery.blockerTracker",
+			"Method does not exist",
 			"Failed to load API/Object"
-		);
+		),
+		_log = [];
 	
 	var _public = {
 			init : function( settings ){
@@ -38,10 +59,9 @@
 				_settings = _defaults;
 				
 				_private.prepearConsole();
+				
 				$.fn.blockerTracker( "flash" );
 				$.fn.blockerTracker( "ads" );
-				
-				console.log( "Init Complete" );
 			},
 			ads : function(){
 				var src = _settings.assets.path + _settings.assets.js,
@@ -58,7 +78,6 @@
 				_checks[ "flash" ] = true;
 			},
 			flash : function(){
-				console.log( _loopBack );
 				if( _loopBack ){
 					_private.toggleLoopback();
 					_private.checkSWF();
@@ -79,13 +98,13 @@
 	                    _value || 0,
 	                    _settings.analytics.influenceBounce
                     ];
-				console.log( trackingData );
+				_log.log( _namespace, trackingData );
 				if( _settings.analytics.legacyTracker ){
 					_settings.analytics.legacyTracker[ trackingData.pop() ].apply( _settings.analytics.legacyTracker, trackingData );
 				}
 				else {
 					if( typeof _gaq == "undefined" ){
-						console.log( _error[ 3 ] + " (Analytics/_gaq)" )
+						_log.log( _namespace, _error[ 3 ] + " (Analytics/_gaq)" )
 					}
 					else {
 						_gaq.push( trackingData );;						
@@ -100,7 +119,10 @@
 				
 				$SWFContainer.attr({
 					id : SWFId
+				}).css({
+					display : "none"
 				});
+				
 				
 				$("body").append( $SWFContainer );	
 	
@@ -118,24 +140,27 @@
 				);	
 				},
 			loadSWF : function(){
-				$.getScript( _settings.api.swfObject, function(){
-					_private.insertFlashObject();		
-				})
-				.fail(function(){
-					console.log( _error[ 3 ] + " (" + _settings.api.swfObject + ")" );
-				});
+				if( typeof swfobject == "undefined" ){
+					$.getScript( _settings.api.swfObject, function(){
+						_private.insertFlashObject();		
+					})
+					.fail(function(){
+						_log.log( _namespace, _error[ 3 ] + " (" + _settings.api.swfObject + ")" );
+					});					
+				}
+				else {
+					_private.insertFlashObject();
+				}
 			},
 			loadSWFcallback : function( event ){
 				if( event.success ){
 					var t = setTimeout( "$.fn.blockerTracker( 'flash' )", 250 );
 				}
 				else {
-					$( "#" + _settings.id + "_SWFContainer" ).hide();
-					console.log( _error[ 3 ] + " (" + SWFPath + ")" );
+					_log.log( _namespace, _error[ 3 ] + " (" + SWFPath + ")" );
 				}
 			},
 			checkSWF : function(){
-				$( "#" + _settings.id + "_SWFContainer" ).hide();
 				if( typeof _checks[ "flash" ] == "undefined" ){
 					_private.logToAnalytics( "Flash", _settings.report.block );					
 				} else {					
@@ -152,6 +177,21 @@
 					console.error = function(){};
 					console.info = function(){};
 				}
+				if( _debug ){
+					_log = console;
+				}
+				else {
+					_log.log = function(){};
+					_log.warn = function(){};
+					_log.error = function(){};
+					_log.info = function(){};
+				}
+			},
+			disableLogging : function(){
+				_log.log = function(){};
+				_log.warn = function(){};
+				_log.error = function(){};
+				_log.info = function(){};
 			}
 		};
 	
@@ -163,11 +203,11 @@
 			return _public.init.apply( this, arguments );
 		}
 		else {
-			$.error( _error[2] + " (" + method +")" );
+			console.log( _namespace, _error[2] + " (" + method +")" );
 		}
 	};
 
 })( jQuery );
-$(window).load( function(){
+$(window).load( function(){	
 	$.fn.blockerTracker();
 });
