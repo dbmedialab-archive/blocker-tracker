@@ -37,12 +37,13 @@
 				success : "Showing",
 				block : "Blocking"
 			},
-			id : "blockerTracker_" + new Date().getTime()
+			id : "blockerTracker_" + new Date().getTime(),
+			callbackDelay : 1000
 		},
 		_namespace = "BlockerTracker",
 		_settings,
 		_loopBack = false,
-		_debug = true;
+		_debug = false,
 		_checks = [],
 		_tracker = window._gaq || false,
 		_error = new Array(
@@ -59,9 +60,12 @@
 			init : function( settings ){
 				if( !_init ){
 					_init = true;
-					$.extend( _defaults, settings, true );
+					$.extend( true, _defaults, settings );
 					_settings = _defaults;
 					_private.prepearConsole();				
+					
+					_log.log( _namespace, "Plugin Initialized with settings:" );
+					_log.log( _namespace, _settings );
 				}
 				else {
 					_log.log( _namespace, _error[ 4 ] );
@@ -70,7 +74,7 @@
 			ads : function(){
 				var src = _settings.assets.path + _settings.assets.js,
 					type = "AdBlocker";
-				
+				_log.log( _namespace, "Fetching AD (" + src +")" );
 				$.getScript( src, function(){
 					_private.logToAnalytics( "Ads", _settings.report.success );					
 				})
@@ -108,7 +112,7 @@
 				}
 				else {
 					if( typeof _gaq == "undefined" ){
-						_log.log( _namespace, _error[ 3 ] + " (Analytics/_gaq)" )
+						_log.error( _namespace, _error[ 3 ] + " (Analytics/_gaq)" )
 					}
 					else {
 						_gaq.push( trackingData );;						
@@ -126,10 +130,10 @@
 				}).css({
 					display : "none"
 				});
-				
-				
-				$("body").append( $SWFContainer );	
-	
+								
+				_log.log( _namespace, "inserting SWF (" + SWFPath +")" );
+				$("body").append( $SWFContainer );
+
 				swfobject.embedSWF(
 					SWFPath,
 					SWFId,
@@ -142,14 +146,14 @@
 					null,
 					SWFCallback
 				);	
-				},
+			},
 			loadSWF : function(){
 				if( typeof swfobject == "undefined" ){
 					$.getScript( _settings.api.swfObject, function(){
 						_private.insertFlashObject();		
 					})
 					.fail(function(){
-						_log.log( _namespace, _error[ 3 ] + " (" + _settings.api.swfObject + ")" );
+						_log.error( _namespace, _error[ 3 ] + " (" + _settings.api.swfObject + ")" );
 					});					
 				}
 				else {
@@ -158,7 +162,7 @@
 			},
 			loadSWFcallback : function( event ){
 				if( event.success ){
-					var t = setTimeout( "$.fn.blockerTracker( 'flash' )", 250 );
+					var t = setTimeout( "$.fn.blockerTracker( 'flash' )", _settings.callbackDelay );
 				}
 				else {
 					_log.log( _namespace, _error[ 3 ] + " (" + SWFPath + ")" );
