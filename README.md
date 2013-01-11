@@ -5,7 +5,7 @@ Sample code and layout to sniff for use of ad-block and flash-block and generate
 
 ## Dependancy
 - Google Analytics
-- JQuery
+- JQuery 1.5 or more
 
 ## Install
 1. Copy script and asset files to server
@@ -13,4 +13,14 @@ Sample code and layout to sniff for use of ad-block and flash-block and generate
 3. (Optional) Configure
 
 ### Configuration
+#### Assets
+If you which to move the assets to a different location than _root/assets please configure as follows
+
+	$.fn.blockerTracker({
+		assets : {
+			path : "js/blockerTracker/assets/"
+		}
+	});
+
+#### Analytics
 If you use an old analytics tracker, the plugin needs to be launched with settings different settings.
