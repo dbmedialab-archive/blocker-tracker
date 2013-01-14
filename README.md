@@ -19,7 +19,7 @@ If you which to move the assets to a different location than _root/assets please
 
 	$.fn.blockerTracker({
 		assets : {
-			path : "js/blockerTracker/assets/"
+			path : "PATH/TO/ASSETS/" //adding the last "/" is important
 		}
 	});
 
