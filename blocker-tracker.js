@@ -38,12 +38,12 @@
 				block : "Blocking"
 			},
 			id : "blockerTracker_" + new Date().getTime(),
-			callbackDelay : 1000
+			callbackDelay : 1000,
+			debug : false
 		},
 		_namespace = "BlockerTracker",
 		_settings,
 		_loopBack = false,
-		_debug = false,
 		_checks = [],
 		_tracker = window._gaq || false,
 		_error = new Array(
@@ -54,7 +54,12 @@
 			"Plugin allready initialized"
 		),
 		_init = false,
-		_log = [];
+		_log = {},
+		_logMethods = [
+		    "log", "debug", "info", "warn", "error", "assert", "clear", "dir", "dirxml",
+			"trace", "group", "groupCollapsed", "groupEnd", "time", "timeEnd", "timeStamp",
+			"profile", "profileEnd", "count", "exception", "table"
+		];
 	
 	var _public = {
 			init : function( settings ){
@@ -62,7 +67,7 @@
 					_init = true;
 					$.extend( true, _defaults, settings );
 					_settings = _defaults;
-					_private.prepearConsole();				
+					_private.prepareConsole();				
 					
 					_log.log( _namespace, "Plugin Initialized with settings:" );
 					_log.log( _namespace, _settings );
@@ -178,28 +183,22 @@
 			toggleLoopback : function(){
 				_loopBack = !_loopBack;
 			},
-			prepearConsole : function(){
-				if( typeof console == "undefined" ){
-					console.log = function(){};
-					console.warn = function(){};
-					console.error = function(){};
-					console.info = function(){};
+			prepareConsole : function(){
+				if ( ! window.console ) {
+					window.console = {};
+					_private.disableLoggingForObject( window.console );
 				}
-				if( _debug ){
+				if( _settings.debug ){
 					_log = console;
 				}
 				else {
-					_log.log = function(){};
-					_log.warn = function(){};
-					_log.error = function(){};
-					_log.info = function(){};
+					_private.disableLoggingForObject( _log );
 				}
 			},
-			disableLogging : function(){
-				_log.log = function(){};
-				_log.warn = function(){};
-				_log.error = function(){};
-				_log.info = function(){};
+			disableLoggingForObject : function( object ){
+				for( method in _logMethods ){
+					object[ _logMethods[ method ] ] = function(){};
+				}
 			}
 		};
 	
