@@ -7,10 +7,13 @@
   Support:
   	AdBlocker
   	FlashBlocker
+  
+  Dependency:
+  	JQuery 1.5 or higher (tested with 1.8)
   -------------------
 
   @file		blocker-tracker.js
-  @version	2.0.0
+  @version	2.1.0
   @date     11-jan-2013
   @author   Sebastian Brage Hansen <sbh@dagbladet.no>
 
@@ -42,7 +45,7 @@
 			debug : false
 		},
 		_namespace = "BlockerTracker",
-		_settings,
+		_settings = {},
 		_loopBack = false,
 		_checks = [],
 		_tracker = window._gaq || false,
@@ -203,8 +206,8 @@
 		};
 	
 	$.fn.blockerTracker = function( method ){
-		if ( _public[method] ) {
-			return _public[ method ].apply( this, Array.prototype.slice.call( arguments, 1 ));
+		if ( _public[ method ] ) {
+			return _public[ method ].apply( this, Array.prototype.slice.call( arguments, 1 ) );
 		}
 		else if ( typeof method === 'object' || ! method ) {
 			return _public.init.apply( this, arguments );
